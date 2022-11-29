@@ -30,6 +30,14 @@ class WorkerNode(Connections):
         filepath = filepath + filename
         os.rename(filepath, newpath)
 
+    def Read(self, filename):
+        file = self.pathname + '/' + filename
+        f = open(file, "r")
+        content = f.read()
+        f.close()
+        os.remove(file)
+        return content
+
 
 class MasterNode(Connections):
 
@@ -77,8 +85,17 @@ def Write(filename, num_workers):
     shutil.rmtree(outputpath)
 
 
-def Read(filename):
-        pass
+def Read(filename, num_workers):
+    outputfile = os.getcwd() + "/CombinedOutput.txt"
+    f = open(outputfile, "a+")
+    for i in range(1, num_workers+1):
+        w = WorkerNode(i+2000)
+        filenam = os.path.splitext(filename)[0]
+        tempfilename = str(filenam) + '_' + str(i) + '.txt'
+        tempcontent = w.Read(tempfilename)
+        f.write(tempcontent)
+    f.close()
 
 
-Write('input.txt', 3)
+#Write('input.txt', 3)
+Read('input.txt', 3)
