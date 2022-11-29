@@ -2,6 +2,8 @@ import socket
 import os
 from multiprocessing import *
 from Connections import *
+import time
+from filesplit.split import Split
 
 class WorkerNode(Connections):
 
@@ -16,10 +18,15 @@ class WorkerNode(Connections):
         if not os.path.isdir(pathname):
             os.mkdir(pathname)
     
-    def Write():
-        pass
+    def Write(self, filename, num_workers):
+        file = os.getcwd() + '/' + filename
+        splitsize = int(os.path.getsize(file) / num_workers)
+        outputpath = os.getcwd() + '/Storage1'
 
-    def Read():
+        split = Split(file, outputpath)
+        split.bysize(splitsize)
+
+    def Read(self, filename):
         pass
 
 
@@ -38,8 +45,22 @@ class MasterNode(Connections):
         for i in range(1,self.num_workers+1):
             self.Client(2000+i)
     
-    def stats():
+    def stats(self):
         print('PPID:', os.getppid())
         print('PID:', os.getpid())
+    
+    def WriteFile(self, filename):
+        self.WorkerNode.Write(filename, self.num_workers)
+
+    def ReadFile(self, filename):
+        pass
+
+    def MapReduce(self):
+        pass
+
+    def Q(self):
+        pass
 
 a = MasterNode(3)
+time.sleep(1000)
+a.WriteFile('input.txt')
