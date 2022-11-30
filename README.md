@@ -10,3 +10,5 @@ A client program that communicates with the nodes based on the types of operatio
 WRITE: Given an input file, split it into multiple partitions and store it across multiple worker nodes.
 READ: Given a file name, read the different partitions from different workers and display it to the user.
 MAP-REDUCE - Given an input file, a mapper file and a reducer file, execute a MapReduce Job on the cluster
+
+# Also : I LOVE YOU
