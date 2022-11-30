@@ -12,13 +12,11 @@ class WorkerNode(Connections):
     def __init__(self, port):
         self.port = port
 
-        #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        #result = sock.connect_ex(('127.0.0.1',port))
-        #if result == 0:
-
         pworker = Process(target = self.Server, args =(self.port,))
         pworker.start()
 
+        paths = os.getcwd()
+        self.paths = paths
         pathname = os.getcwd() + '/Storage' + str(self.port-2000)
         self.pathname = pathname
 
@@ -37,6 +35,23 @@ class WorkerNode(Connections):
         f.close()
         os.remove(file)
         return content
+
+    def mapfunc(self, mapperpath, filenam):
+        temppath = os.path.abspath(os.path.join(mapperpath, os.pardir))
+        os.chdir(temppath)
+        tempinput = temppath + '/' + filenam + '_' + str(self.port - 2000) + '.txt'
+        os.system(f"python3 mapper.py -{tempinput}".format(tempinput = tempinput))
+        os.chdir(self.paths)
+
+    def shuffunc(self):
+        pass
+
+    def redfunc(self, reducerpath, filenam):
+        tempinput = self.pathname + '/' + filenam + '.txt'
+        temppath = os.path.abspath(os.path.join(reducerpath, os.pardir))
+        os.chdir(temppath)
+        os.system(f"python3 reducer.py -{tempinput}".format(tempinput=tempinput))
+        os.chdir(self.paths)
 
 
 class MasterNode(Connections):
@@ -59,43 +74,5 @@ class MasterNode(Connections):
         print('PID:', os.getpid())
 
     def Q(self):
+        # Use process.start() and process.join() to schedule
         pass
-
-
-a = MasterNode(3)
-
-
-def Write(filename, num_workers):
-    file = os.getcwd() + '/' + filename
-    splitsize = int(os.path.getsize(file) / num_workers)
-
-    outputpath = os.getcwd() + '/TempOutputs/'
-    if not os.path.isdir(outputpath):
-        os.mkdir(outputpath)
-    
-    split = Split(file, outputpath)
-    split.bysize(splitsize)
-
-    for i in range(1, num_workers+1):
-        w = WorkerNode(i+2000)
-        filenam = os.path.splitext(filename)[0]
-        tempfilename = str(filenam) + '_' + str(i) + '.txt'
-        w.Write(outputpath, tempfilename)
-
-    shutil.rmtree(outputpath)
-
-
-def Read(filename, num_workers):
-    outputfile = os.getcwd() + "/CombinedOutput.txt"
-    f = open(outputfile, "a+")
-    for i in range(1, num_workers+1):
-        w = WorkerNode(i+2000)
-        filenam = os.path.splitext(filename)[0]
-        tempfilename = str(filenam) + '_' + str(i) + '.txt'
-        tempcontent = w.Read(tempfilename)
-        f.write(tempcontent)
-    f.close()
-
-
-#Write('input.txt', 3)
-Read('input.txt', 3)
