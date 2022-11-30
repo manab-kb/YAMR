@@ -39,7 +39,7 @@ class WorkerNode(Connections):
     def mapfunc(self, mapperpath, filenam):
         temppath = os.path.abspath(os.path.join(mapperpath, os.pardir))
         os.chdir(temppath)
-        tempinput = temppath + '/' + filenam + '_' + str(self.port - 2000) + '.txt'
+        tempinput = self.pathname + '/' + filenam + '_' + str(self.port - 2000) + '.txt'
         os.system(f"python3 mapper.py -{tempinput}".format(tempinput = tempinput))
         os.chdir(self.paths)
 
