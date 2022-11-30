@@ -1,13 +1,12 @@
-# Insert *your project title* here
-Write a detailed description about your project - eg: instructions on how to get started, common issues, etc.
+# Yet-Another-Map-Reduce
+A Map-Reduce Framework built via Python.
 
-# Contributing to *your project title*
-Hello and welcome! We are so glad that you are interested in contributing to *your project title*!
+# Contributing to Yet-Another-Map-Reduce
+Hello and welcome! We are so glad that you are interested in contributing to Yet-Another-Map-Reduce!
 We only have a couple of rules and we hope you enjoy the process :)
 
 ## Contributing Rules
 1. Don't move or delete any files. Only modify them.
-2. Add additional rules as per *your project title*.
 
 ## Contributing Process
 1. Fork the repository
@@ -22,3 +21,19 @@ We only have a couple of rules and we hope you enjoy the process :)
 10. Submit Pull Request
 
 It's that easy! We hope you enjoy contributing to our repository. Don't hesitate to contact any of the maintainers about any problems!
+
+---
+
+## BD PROJECT - SEM V
+YET ANOTHER MAP REDUCE 
+A project made for Big Data Sem - 5
+
+We are trying to replicate map-reduce framework.
+
+THE PROJECT CONSISTS OF
+
+A multi-node environment consisting of a master node and multiple worker nodes.
+A client program that communicates with the nodes based on the types of operations requested by the user. The operations it can perform are:
+WRITE: Given an input file, split it into multiple partitions and store it across multiple worker nodes.
+READ: Given a file name, read the different partitions from different workers and display it to the user.
+MAP-REDUCE - Given an input file, a mapper file and a reducer file, execute a MapReduce Job on the cluster
