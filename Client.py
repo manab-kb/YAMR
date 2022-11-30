@@ -46,7 +46,7 @@ class Client(object):
         f.close()
 
     def MapFunc(self, num_workers, mapperpath):
-        Write('input.txt', num_workers)
+        self.Write('input.txt', num_workers)
         filenam = os.path.splitext("input.txt")[0]
         for i in range(1, num_workers + 1):
             w = WorkerNode(i + 2000)
@@ -64,5 +64,6 @@ class Client(object):
 
 num_workers = int(sys.argv[1])
 C = Client()
-C.Write('input.txt', num_workers)
+# C.Write('input.txt', num_workers)
 # C.Read('input.txt', num_workers)
+C.MapFunc(5, "/home/manabkb/Desktop/HDFS-Framework/Mapper/mapper.py")

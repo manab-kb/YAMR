@@ -13,4 +13,4 @@ contentlist = content.split(" ")
 
 
 for i in contentlist:
-    print(i + ' ,1', f2)
+    f2.write(i + ', 1\n')

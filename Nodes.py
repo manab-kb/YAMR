@@ -40,7 +40,7 @@ class WorkerNode(Connections):
         temppath = os.path.abspath(os.path.join(mapperpath, os.pardir))
         os.chdir(temppath)
         tempinput = self.pathname + '/' + filenam + '_' + str(self.port - 2000) + '.txt'
-        os.system(f"python3 mapper.py -{tempinput}".format(tempinput = tempinput))
+        os.system(f"python3 mapper.py {tempinput}".format(tempinput = tempinput))
         os.chdir(self.paths)
 
     def shuffunc(self):
@@ -50,7 +50,7 @@ class WorkerNode(Connections):
         tempinput = self.pathname + '/' + filenam + '.txt'
         temppath = os.path.abspath(os.path.join(reducerpath, os.pardir))
         os.chdir(temppath)
-        os.system(f"python3 reducer.py -{tempinput}".format(tempinput=tempinput))
+        os.system(f"python3 reducer.py {tempinput}".format(tempinput=tempinput))
         os.chdir(self.paths)
 
 
