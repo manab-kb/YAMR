@@ -1,10 +1,9 @@
-# Contributing to *your project title*
-Hello and welcome! We are so glad that you are interested in contributing to *your project title*!
+# Contributing to Yet-Another-Map-Reduce
+Hello and welcome! We are so glad that you are interested in contributing to Yet-Another-Map-Reduce!
 We only have a couple of rules and we hope you enjoy the process :)
 
 ## Contributing Rules
 1. Don't move or delete any files. Only modify them.
-2. Add additional rules as per *your project title*.
 
 ## Contributing Process
 1. Fork the repository
@@ -19,3 +18,5 @@ We only have a couple of rules and we hope you enjoy the process :)
 10. Submit Pull Request
 
 It's that easy! We hope you enjoy contributing to our repository. Don't hesitate to contact any of the maintainers about any problems!
+
+---
