@@ -66,9 +66,6 @@ class MasterNode(Connections):
         pmain = Process(target = self.Server, args =(2000,))
         pmain.start()
 
-        for i in range(1,self.num_workers+1):
-            self.Client(2000+i)
-
     def stats(self):
         print('PPID:', os.getppid())
         print('PID:', os.getpid())

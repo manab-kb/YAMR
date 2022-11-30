@@ -1,3 +1,4 @@
+import datetime
 import socket
 import os
 import sys
@@ -8,6 +9,9 @@ from filesplit.split import Split
 import shutil
 from Nodes import *
 from Connections import *
+import datetime
+
+fout = open("./Logs/log.txt", "a+")
 
 
 class Client(object):
@@ -27,27 +31,38 @@ class Client(object):
         split.bysize(splitsize)
 
         for i in range(1, num_workers + 1):
+            m = MasterNode(num_workers)
+            fout.write(f"MasterNode 127.0.0.1:2000 Active\n")
             w = WorkerNode(i + 2000)
+            portnum = str(i+2000)
+            fout.write(f"WorkerNode 127.0.0.1:{portnum} Active\n".format(portnum = portnum))
             path, ext = os.path.splitext(filename)
             filenam = path.split('/')
             filenam = filenam[-1]
             tempfilename = str(filenam) + '_' + str(i) + '.txt'
             w.Write(outputpath, tempfilename)
 
+        fout.write("\nWRITE operation complete\n")
         shutil.rmtree(outputpath)
 
     def Read(self, filename, num_workers, inputpath):
         outputfile = filename
         f = open(outputfile, "a+")
         for i in range(1, num_workers + 1):
+            m = MasterNode(num_workers)
+            fout.write(f"MasterNode 127.0.0.1:2000 Active\n")
             w = WorkerNode(i + 2000)
+            portnum = str(i + 2000)
+            fout.write(f"WorkerNode 127.0.0.1:{portnum} Active\n".format(portnum=portnum))
             path, ext = os.path.splitext(inputpath)
             filenam = path.split('/')
             filenam = filenam[-1]
             tempfilename = str(filenam) + '_' + str(i) + '.txt'
             tempcontent = w.Read(tempfilename)
             f.write(tempcontent)
+
         f.close()
+        fout.write("\nREAD operation complete\n")
 
     def MapFunc(self, num_workers, mapperpath, filename):
         self.Write(filename, num_workers)
@@ -55,8 +70,14 @@ class Client(object):
         filenam = path.split('/')
         filenam = filenam[-1]
         for i in range(1, num_workers + 1):
+            m = MasterNode(num_workers)
+            fout.write(f"MasterNode 127.0.0.1:2000 Active\n")
             w = WorkerNode(i + 2000)
+            portnum = str(i + 2000)
+            fout.write(f"WorkerNode 127.0.0.1:{portnum} Active\n".format(portnum=portnum))
             w.mapfunc(mapperpath, filenam)
+
+        fout.write("\nMAP operation complete\n")
 
     def ShuffleFunc(self, num_workers):
         pass
@@ -64,8 +85,14 @@ class Client(object):
     def RedFunc(self, num_workers, reducerpath):
         filenam = os.path.splitext("Output.txt")[0]
         for i in range(1, num_workers + 1):
+            m = MasterNode(num_workers)
+            fout.write(f"MasterNode 127.0.0.1:2000 Active\n")
             w = WorkerNode(i + 2000)
+            portnum = str(i + 2000)
+            fout.write(f"WorkerNode 127.0.0.1:{portnum} Active".format(portnum=portnum))
             w.redfunc(reducerpath, filenam)
+
+        fout.write("\nREDUCE operation complete\n")
 
 
 task = sys.argv[1]
@@ -74,6 +101,7 @@ if task == "write":    # Example: python3 Client.py write /home/usrnam/Desktop/Y
     C = Client()
     inputpath = sys.argv[2]
     num_workers = int(sys.argv[3])
+    fout.write("\nWRITE OPERATION SCHEDULED AT " + str(datetime.datetime.now()) + "\n\n")
     C.Write(inputpath, num_workers)
     sys.exit()
 
@@ -84,6 +112,7 @@ if task == "read":
     outputpath = sys.argv[2]
     num_workers = int(sys.argv[3])
     inputpath = sys.argv[4]
+    fout.write("\nREAD OPERATION SCHEDULED AT " + str(datetime.datetime.now()) + "\n\n")
     C.Read(outputpath, num_workers, inputpath)
     sys.exit()
 
@@ -95,5 +124,9 @@ if task == "mapreduce":
     reducerpath = sys.argv[3]
     num_workers = int(sys.argv[4])
     filename = sys.argv[5]
+    fout.write("\nMAPREDUCE OPERATION SCHEDULED AT " + str(datetime.datetime.now()) + "\n\n")
     C.MapFunc(num_workers, mapperpath, filename)
     C.RedFunc(num_workers, reducerpath)
+    sys.exit()
+
+fout.close()
