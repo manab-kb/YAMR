@@ -12,6 +12,7 @@ from Connections import *
 import datetime
 
 fout = open("./Logs/log.txt", "a+")
+sys.stderr = open("./Logs/errors.txt", "w")
 
 
 class Client(object):
